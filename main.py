@@ -207,6 +207,7 @@ def save_image(modified):
     # return to previous folder
     os.chdir("..")
 
+
 # main
 if __name__ == '__main__':
     show_setup()
