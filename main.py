@@ -68,6 +68,8 @@ def list_menu():
         rgb_modify(selected_file)
     elif choice == '6':
         plot_image(selected_file)
+    elif choice == '7':
+        save_image(modified_file)
     elif choice == '8':
         sys.exit()
     else:
@@ -85,6 +87,7 @@ def select_file():
 
 
 def show_single_img(image):
+    print(image.shape)
     plt.figure()
     plt.imshow(image)
     plt.show()
@@ -108,14 +111,17 @@ def list_names():
 # 2. Read a given RGB colour image using the image file name in order to select the image.
 def read_rgb(filename):
     image = cv2.imread(path + filename)
-    print(image.shape)
+    show_single_img(image)
 
 
 # 3. Convert the image to grayscale.
 def convert_gray(filename):
     image = cv2.imread(path + filename)
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    print(gray_image.shape)
+    # convert to grayscale image
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # three color channel
+    gray_image = cv2.merge([gray, gray, gray])
+    # covert to black & white image
     show_single_img(gray_image)
 
 
@@ -125,13 +131,18 @@ def convert_gray(filename):
 # black and if above the threshold value, it is set to white.
 def convert_bw(filename):
     image = cv2.imread(path + filename)
+    # convert to grayscale image
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    gray_not = cv2.bitwise_not(gray)
+    # three color channel
+    gray_image = cv2.merge([gray, gray, gray])
+    # covert to black & white image
+    show_single_img(gray_image)
+    # set threshold
     thresh = 150
-    img_threshold = cv2.threshold(gray_not, thresh, 255, cv2.THRESH_BINARY)[1]
-    cv2.imshow('threshold', img_threshold)
+    bw_image = cv2.threshold(gray_image, thresh, 255, cv2.THRESH_BINARY)[1]
 
-    show_single_img(img_threshold)
+    cv2.imshow('Black white image', bw_image)
+    show_single_img(bw_image)
     # print(img_threshold.shape)
 
 
@@ -164,6 +175,9 @@ def plot_image(original):
 
 
 # 7. Save the modified image with a given image file name.
+def save_image(filename):
+    cv2.imwrite('.png', im_bw)
+
 
 # main
 if __name__ == '__main__':
