@@ -7,8 +7,27 @@
 # that then can be used in machine learning and deep learning applications.
 # Using a digital camera, firstly take photographs of 10 different objects to form the initial image dataset.
 # These then form the image dataset that can be read by the Python script.
+import tensorflow as tf
 import sys
+import time
 import os
+
+
+
+def init_setup():
+    # ------------------------------------------------------
+    # -- Start of script run actions
+    # ------------------------------------------------------
+
+    print('----------------------------------------------------')
+    print('-- Start script run ' + str(time.strftime('%c')))
+    print('----------------------------------------------------\n')
+
+    print('-- Python version     : ' + str(sys.version))
+    # print('-- TensorFlow version : ' + str(tf.__version__))
+    print('-- Matplotlib version : ' + str(mpl.__version__))
+    print('-- Opencv version     : ' + str(cv2.__version__))
+    print('')
 
 
 def list_menu():
@@ -28,12 +47,22 @@ Please enter your choice: """)
     if choice == "1":
         list_names()
         list_menu()
+    if choice == "2":
+        read_rgb(choose_file())
+        list_menu()
     elif choice == "8":
         sys.exit()
     else:
         print("You must only select either a number from 1 - 8")
         print("Please try again")
         list_menu()
+
+
+def choose_file():
+    list_names()
+    filename = input(
+        """Please choose your image: """)
+    return filename
 
 
 # 1.
@@ -46,6 +75,14 @@ def list_names():
         print(f)
 
 
+# 2.
+def read_rgb(filename):
+    path = './images/'
+    image = cv2.imread(path + filename)
+    print(image.shape)
+
+
 # main
 if __name__ == '__main__':
+    init_setup()
     list_menu()
