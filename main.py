@@ -11,7 +11,9 @@ import tensorflow as tf
 import sys
 import time
 import os
-
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import cv2
 
 
 def init_setup():
