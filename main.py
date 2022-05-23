@@ -147,6 +147,7 @@ def rgb_modify(filename):
     adjusted_img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     show_single_img(adjusted_img)
 
+
 # 6. View the original and modified image using Matplotlib.
 def plot_image(original):
     org_image = cv2.imread(path + original)
