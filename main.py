@@ -53,8 +53,7 @@ def list_menu():
     print('6: View the original and modified image using Matplotlib.')
     print('7: Save the modified image with a given image file name.')
     print('8: Quit the Python script run.')
-    choice = input(
-        '''Please enter your choice: ''')
+    choice = input('Please enter your choice: ')
 
     if choice == '1':
         list_names()
@@ -80,8 +79,7 @@ def list_menu():
 
 def select_file():
     global selected_file
-    filename = input(
-        '''Please choose your image: ''')
+    filename = input('Please choose your image: ')
     selected_file = filename
     return selected_file
 
@@ -112,18 +110,17 @@ def list_names():
 # 2. Read a given RGB colour image using the image file name in order to select the image.
 def read_rgb(filename):
     image = cv2.imread(path + filename)
-    show_single_img(image, "read_rgb() " + filename)
+    show_single_img(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), 'read_rgb() ' + filename)
 
 
 # 3. Convert the image to grayscale.
 def convert_gray(filename):
     image = cv2.imread(path + filename)
-    # convert to grayscale image
+    # convert to grayscale value
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    # three color channel
+    # convert to three gray color channel
     gray_image = cv2.merge([gray, gray, gray])
-    # covert to black & white image
-    show_single_img(gray_image, "convert_gray() " + filename)
+    show_single_img(gray_image, 'convert_gray() ' + filename)
 
 
 # 4. Convert the image to a black & white image where the RGB colour image is initially converted to
@@ -132,18 +129,19 @@ def convert_gray(filename):
 # black and if above the threshold value, it is set to white.
 def convert_bw(filename):
     image = cv2.imread(path + filename)
-    # convert to grayscale image
+    # convert to grayscale value
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    # three color channel
+    # convert to three gray color channel
     gray_image = cv2.merge([gray, gray, gray])
     # set threshold
-    thresh = 127
+    thresh = int(input('Threshold between 0 - 255: '))
+    # TODO: check int
+    if thresh < 0 or thresh > 256:
+        print("please input threshold value between 0 - 255!")
+        convert_bw(filename)
     # covert to black & white image
     bw_image = cv2.threshold(gray_image, thresh, 255, cv2.THRESH_BINARY)[1]
-
-    cv2.imshow('Black white image', bw_image)
-    show_single_img(bw_image,  "convert_bw() " + filename)
-    # print(img_threshold.shape)
+    show_single_img(bw_image, 'convert_bw() ' + filename)
 
 
 # 5. Adjust the individual red, green and blue values for the pixels in the image with a number from 0
