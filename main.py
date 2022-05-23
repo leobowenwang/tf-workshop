@@ -144,11 +144,8 @@ def rgb_modify(filename):
     image[20][50] = (0, 0, 255)
     (b, g, r) = image[20][50]
     print('The (B,G,R) value at 50th pixel of the 20th row is ', (b, g, r))
-
-    plt.figure()
-    plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-    plt.show()
-
+    adjusted_img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    show_single_img(adjusted_img)
 
 # 6. View the original and modified image using Matplotlib.
 def plot_image(original):
