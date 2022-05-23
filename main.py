@@ -146,15 +146,18 @@ def convert_bw(filename):
     # convert to three gray color channel
     gray_image = cv2.merge([gray, gray, gray])
     # set threshold
-    thresh = int(input('Threshold between 0 - 255: '))
-    # TODO: check int
-    if thresh < 0 or thresh > 256:
-        print('please input threshold value between 0 - 255!')
-        convert_bw(filename)
-    # covert to black & white image
-    bw_image = cv2.threshold(gray_image, thresh, 255, cv2.THRESH_BINARY)[1]
-    cache_mod_file(bw_image)
-    show_img(bw_image, 'convert_bw() ' + filename)
+    try:
+        thresh = int(input('Threshold between 0 - 255: '))
+        # TODO: check int
+        if thresh < 0 or thresh > 256:
+            print('please input threshold value between 0 - 255!')
+            convert_bw(filename)
+        # covert to black & white image
+        bw_image = cv2.threshold(gray_image, thresh, 255, cv2.THRESH_BINARY)[1]
+        cache_mod_file(bw_image)
+        show_img(bw_image, 'convert_bw() ' + filename)
+    except ValueError:
+        print("Illegal Input!")
 
 
 # 5. Adjust the individual red, green and blue values for the pixels in the image with a number from 0
@@ -177,6 +180,7 @@ def rgb_modify(filename):
         (b, g, r) = image[x, y]
         print('After: The (B,G,R) value at [' + str(x) + ', ' + str(y) + '] is ', (b, g, r))
         adjusted_img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        cache_mod_file(adjusted_img)
         show_img(adjusted_img, 'rgb_modify() ' + filename)
     except ValueError:
         print("Illegal Input!")
