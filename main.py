@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 import cv2
 
 path = './images/'
+chosen_img = ''
 
 
 def init_setup():
@@ -75,6 +76,7 @@ def choose_file():
     list_names()
     filename = input(
         """Please choose your image: """)
+    chosen_img = filename
     return filename
 
 
@@ -118,13 +120,13 @@ def convert_bw(filename):
 # to 255.
 
 # 6. View the original and modified image using Matplotlib.
-def plot_image(filename):
-    image = cv2.imread(path + filename)
+def plot_image(original):
+    org_image = cv2.imread(path + original)
 
-    fig, axs = plt.subplots(1, 2, figsize=(14, 4))
+    fig, axs = plt.subplots(1, 2)
     plt.suptitle('Images')
 
-    axs[0].imshow(image)
+    axs[0].imshow(cv2.cvtColor(org_image, cv2.COLOR_BGR2RGB))
     axs[0].set_title('Original image', fontsize=10)
     axs[0].set_xlabel('x pixel', fontsize=10)
     axs[0].set_ylabel('y pixel', fontsize=10)
