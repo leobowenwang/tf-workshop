@@ -21,7 +21,7 @@
 # Using a digital camera, firstly take photographs of 10 different objects to form the initial image dataset.
 # These then form the image dataset that can be read by the Python script.
 import sys
-
+import os
 
 def list_menu():
     print("************Image Augmentation Workshop Project**************")
@@ -52,8 +52,6 @@ if __name__ == '__main__':
 
 
 def list_names():
-    import os
-
     path = './images'
 
     files = os.listdir(path)
