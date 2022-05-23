@@ -119,25 +119,16 @@ def convert_bw(filename):
 
 # 6. View the original and modified image using Matplotlib.
 def plot_image(filename):
-    fig, axs = plt.subplots(1, 3, figsize=(10, 4))
-    plt.suptitle('Image to predict')
+    image = cv2.imread(path + filename)
 
-    axs[0].imshow(filename)
+    fig, axs = plt.subplots(1, 2, figsize=(14, 4))
+    plt.suptitle('Images')
+
+    axs[0].imshow(image)
     axs[0].set_title('Original image', fontsize=10)
     axs[0].set_xlabel('x pixel', fontsize=10)
     axs[0].set_ylabel('y pixel', fontsize=10)
 
-    axs[1].imshow(filename, cmap=plt.get_cmap('gray'))
-    axs[1].set_title('CMAP grayscale image', fontsize=10)
-    axs[1].set_xlabel('x pixel', fontsize=10)
-    axs[1].set_ylabel('y pixel', fontsize=10)
-
-    axs[2].imshow(filename, cmap=plt.get_cmap('binary'))
-    axs[2].set_title('CMAP binary image', fontsize=10)
-    axs[2].set_xlabel('x pixel', fontsize=10)
-    axs[2].set_ylabel('y pixel', fontsize=10)
-
-    plt.tight_layout()
     plt.show()
 
 
