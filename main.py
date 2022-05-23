@@ -52,6 +52,9 @@ Please enter your choice: """)
     if choice == "2":
         read_rgb(choose_file())
         list_menu()
+    if choice == "3":
+        convert_gray(choose_file())
+        list_menu()
     elif choice == "8":
         sys.exit()
     else:
