@@ -52,31 +52,29 @@ Please enter your choice: """)
 
     if choice == "1":
         list_names()
-        list_menu()
     if choice == "2":
         read_rgb(choose_file())
-        list_menu()
     if choice == "3":
         convert_gray(choose_file())
-        list_menu()
     if choice == "4":
         convert_gray(choose_file())
-        list_menu()
+    if choice == "5":
+        rgb_modify(choose_file())
     if choice == "6":
         plot_image(choose_file())
-        list_menu()
     elif choice == "8":
         sys.exit()
     else:
         print("You must only select either a number from 1 - 8, please try again")
-        list_menu()
+
+    list_menu()
 
 
 def choose_file():
     list_names()
     filename = input(
         """Please choose your image: """)
-    chosen_img = filename
+
     return filename
 
 
