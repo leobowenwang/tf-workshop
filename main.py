@@ -16,6 +16,7 @@ import cv2
 
 path = './images/'
 selected_file = ''
+modified_file = ''
 
 
 def show_setup():
@@ -83,6 +84,12 @@ def select_file():
     return selected_file
 
 
+def show_single_img(image):
+    plt.figure()
+    plt.imshow(image)
+    plt.show()
+
+
 # 1. List the names of the available images.
 def list_names():
     print('-- List of images --')
@@ -107,8 +114,9 @@ def read_rgb(filename):
 # 3. Convert the image to grayscale.
 def convert_gray(filename):
     image = cv2.imread(path + filename)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    print(gray.shape)
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    print(gray_image.shape)
+    show_single_img(gray_image)
 
 
 # 4. Convert the image to a black & white image where the RGB colour image is initially converted to
@@ -123,6 +131,7 @@ def convert_bw(filename):
     img_threshold = cv2.threshold(gray_not, thresh, 255, cv2.THRESH_BINARY)[1]
     cv2.imshow('threshold', img_threshold)
 
+    show_single_img(img_threshold)
     # print(img_threshold.shape)
 
 
@@ -136,6 +145,7 @@ def rgb_modify(filename):
     (b, g, r) = image[20][50]
     print('The (B,G,R) value at 50th pixel of the 20th row is ', (b, g, r))
 
+    plt.figure()
     plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     plt.show()
 
