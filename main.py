@@ -15,6 +15,8 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import cv2
 
+path = './images/'
+
 
 def init_setup():
     # ------------------------------------------------------
@@ -31,6 +33,7 @@ def init_setup():
     print('-- Opencv version     : ' + str(cv2.__version__))
     print('')
     print("************Image Augmentation Workshop Project**************")
+
 
 def list_menu():
     print('')
@@ -55,6 +58,12 @@ Please enter your choice: """)
     if choice == "3":
         convert_gray(choose_file())
         list_menu()
+    if choice == "4":
+        convert_gray(choose_file())
+        list_menu()
+    if choice == "6":
+        plot_image(choose_file())
+        list_menu()
     elif choice == "8":
         sys.exit()
     else:
@@ -69,30 +78,70 @@ def choose_file():
     return filename
 
 
-# 1.
+# 1. List the names of the available images.
 def list_names():
-    path = './images'
-
     files = os.listdir(path)
 
     for f in files:
         print(f)
 
 
-# 2.
+# 2. Read a given RGB colour image using the image file name in order to select the image.
 def read_rgb(filename):
-    path = './images/'
     image = cv2.imread(path + filename)
     print(image.shape)
 
 
-# 3.
+# 3. Convert the image to grayscale.
 def convert_gray(filename):
-    path = './images/'
     image = cv2.imread(path + filename)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     print(gray.shape)
 
+
+# 4. Convert the image to a black & white image where the RGB colour image is initially converted to
+# a grayscale image, and the grayscale image is then converted to a black & white image by setting
+# a threshold value from 0 to 255. If a pixel value is below or equal to the threshold value, it is set to
+# black and if above the threshold value, it is set to white.
+def convert_bw(filename):
+    image = cv2.imread(path + filename)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray_not = cv2.bitwise_not(gray)
+    thresh = 100
+    img_threshold = cv2.threshold(gray_not, thresh, 255, cv2.THRESH_BINARY)[1]
+    cv2.imshow('threshold', img_threshold)
+
+    # print(img_threshold.shape)
+
+
+# 5. Adjust the individual red, green and blue values for the pixels in the image with a number from 0
+# to 255.
+
+# 6. View the original and modified image using Matplotlib.
+def plot_image(filename):
+    fig, axs = plt.subplots(1, 3, figsize=(10, 4))
+    plt.suptitle('Image to predict')
+
+    axs[0].imshow(filename)
+    axs[0].set_title('Original image', fontsize=10)
+    axs[0].set_xlabel('x pixel', fontsize=10)
+    axs[0].set_ylabel('y pixel', fontsize=10)
+
+    axs[1].imshow(filename, cmap=plt.get_cmap('gray'))
+    axs[1].set_title('CMAP grayscale image', fontsize=10)
+    axs[1].set_xlabel('x pixel', fontsize=10)
+    axs[1].set_ylabel('y pixel', fontsize=10)
+
+    axs[2].imshow(filename, cmap=plt.get_cmap('binary'))
+    axs[2].set_title('CMAP binary image', fontsize=10)
+    axs[2].set_xlabel('x pixel', fontsize=10)
+    axs[2].set_ylabel('y pixel', fontsize=10)
+
+    plt.tight_layout()
+    plt.show()
+
+
+# 7. Save the modified image with a given image file name.
 
 # main
 if __name__ == '__main__':
