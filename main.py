@@ -95,7 +95,7 @@ def cache_mod_file(filename):
     modified_file = filename
 
 
-def show_single_img(image, title):
+def show_img(image, title):
     print(image.shape)
     plt.figure()
     plt.title(title)
@@ -121,7 +121,7 @@ def list_names():
 # 2. Read a given RGB colour image using the image file name in order to select the image.
 def read_rgb(filename):
     image = cv2.imread(path + filename)
-    show_single_img(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), 'read_rgb() ' + filename)
+    show_img(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), 'read_rgb() ' + filename)
 
 
 # 3. Convert the image to grayscale.
@@ -132,7 +132,7 @@ def convert_gray(filename):
     # convert to three gray color channel
     gray_image = cv2.merge([gray, gray, gray])
     cache_mod_file(gray_image)
-    show_single_img(gray_image, 'convert_gray() ' + filename)
+    show_img(gray_image, 'convert_gray() ' + filename)
 
 
 # 4. Convert the image to a black & white image where the RGB colour image is initially converted to
@@ -149,12 +149,12 @@ def convert_bw(filename):
     thresh = int(input('Threshold between 0 - 255: '))
     # TODO: check int
     if thresh < 0 or thresh > 256:
-        print("please input threshold value between 0 - 255!")
+        print('please input threshold value between 0 - 255!')
         convert_bw(filename)
     # covert to black & white image
     bw_image = cv2.threshold(gray_image, thresh, 255, cv2.THRESH_BINARY)[1]
     cache_mod_file(bw_image)
-    show_single_img(bw_image, 'convert_bw() ' + filename)
+    show_img(bw_image, 'convert_bw() ' + filename)
 
 
 # 5. Adjust the individual red, green and blue values for the pixels in the image with a number from 0
@@ -167,13 +167,13 @@ def rgb_modify(filename):
     (b, g, r) = image[20][50]
     print('The (B,G,R) value at 50th pixel of the 20th row is ', (b, g, r))
     adjusted_img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    show_single_img(adjusted_img)
+    show_img(adjusted_img, 'rgb_modify() ' + filename)
 
 
 # 6. View the original and modified image using Matplotlib.
 def plot_image(original, modified):
     if modified_file is None:
-        print("please modify image first!")
+        print('please modify image first!')
         list_menu()
 
     org_image = cv2.imread(path + original)
@@ -200,12 +200,12 @@ def plot_image(original, modified):
 def save_image(modified):
     filename = input('Input file name for modified image: ')
     # store in mod_images directory
-    os.chdir("./mod_images/")
+    os.chdir('./mod_images/')
     # store image
     cv2.imwrite(filename, modified)
-    print("-- " + filename + "stored successfully in ./mod_images/ --")
+    print('-- ' + filename + 'stored successfully in ./mod_images/ --')
     # return to previous folder
-    os.chdir("..")
+    os.chdir('..')
 
 
 # main
