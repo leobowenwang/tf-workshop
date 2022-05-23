@@ -35,37 +35,42 @@ def show_setup():
 def list_menu():
     print('')
     if selected_file:
-        print("-- Selected File: [" + selected_file + "] --")
-
-    print("1: List the names of the available images.")
-    print("2: Read a given RGB colour image using the image file name in order to select the image.")
-    print("3: Convert the image to grayscale.")
-    print("4: Convert the image to a black & white image where the RGB colour image is initially converted to a "
-          "grayscale image.")
-    print("5. Adjust the individual red, green and blue values for the pixels in the image with a number from 0 "
-          "to 255.")
-    print("6: View the original and modified image using Matplotlib.")
-    print("7: Save the modified image with a given image file name.")
-    print("8: Quit the Python script run.")
-    choice = input(
-        """Please enter your choice: """)
-
-    if choice == "1":
+        print('-- Selected File: [' + selected_file + '] --')
+    else:
+        print('----------------------------------------------------')
+        print('Please select first image!')
         list_names()
-    elif choice == "2":
+        list_menu()
+
+    print('1: List the names of the available images.')
+    print('2: Read a given RGB colour image using the image file name in order to select the image.')
+    print('3: Convert the image to grayscale.')
+    print('4: Convert the image to a black & white image where the RGB colour image is initially converted to a '
+          'grayscale image.')
+    print('5. Adjust the individual red, green and blue values for the pixels in the image with a number from 0 '
+          'to 255.')
+    print('6: View the original and modified image using Matplotlib.')
+    print('7: Save the modified image with a given image file name.')
+    print('8: Quit the Python script run.')
+    choice = input(
+        '''Please enter your choice: ''')
+
+    if choice == '1':
+        list_names()
+    elif choice == '2':
         read_rgb(selected_file)
-    elif choice == "3":
+    elif choice == '3':
         convert_gray(selected_file)
-    elif choice == "4":
+    elif choice == '4':
         convert_gray(selected_file)
-    elif choice == "5":
+    elif choice == '5':
         rgb_modify(selected_file)
-    elif choice == "6":
+    elif choice == '6':
         plot_image(selected_file)
-    elif choice == "8":
+    elif choice == '8':
         sys.exit()
     else:
-        print("You must only select either a number from 1 - 8, please try again")
+        print('You must only select either a number from 1 - 8, please try again')
 
     list_menu()
 
@@ -73,18 +78,24 @@ def list_menu():
 def select_file():
     global selected_file
     filename = input(
-        """Please choose your image: """)
+        '''Please choose your image: ''')
     selected_file = filename
+    return selected_file
 
 
 # 1. List the names of the available images.
 def list_names():
-    files = os.listdir(path)
+    print('-- List of images --')
+    filelist = []
 
-    for f in files:
-        print(f)
+    for files in os.listdir(path):
+        filelist.append(files)
+        print(files)
 
-    select_file()
+    if select_file() not in filelist:
+        print('Please input valid file name!')
+        print('')
+        list_names()
 
 
 # 2. Read a given RGB colour image using the image file name in order to select the image.
@@ -120,10 +131,10 @@ def convert_bw(filename):
 def rgb_modify(filename):
     image = cv2.imread(path + filename)
     (b, g, r) = image[20][50]
-    print("The (B,G,R) value at 50th pixel of the 20th row is ", (b, g, r))
+    print('The (B,G,R) value at 50th pixel of the 20th row is ', (b, g, r))
     image[20][50] = (0, 0, 255)
     (b, g, r) = image[20][50]
-    print("The (B,G,R) value at 50th pixel of the 20th row is ", (b, g, r))
+    print('The (B,G,R) value at 50th pixel of the 20th row is ', (b, g, r))
 
     plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     plt.show()
