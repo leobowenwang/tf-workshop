@@ -26,7 +26,7 @@ def list_menu():
 Please enter your choice: """)
 
     if choice == "1":
-        print("1")
+        list_names()
         list_menu()
     elif choice == "8":
         sys.exit()
@@ -36,10 +36,7 @@ Please enter your choice: """)
         list_menu()
 
 
-if __name__ == '__main__':
-    list_menu()
-
-
+# 1.
 def list_names():
     path = './images'
 
@@ -47,3 +44,8 @@ def list_names():
 
     for f in files:
         print(f)
+
+
+# main
+if __name__ == '__main__':
+    list_menu()
