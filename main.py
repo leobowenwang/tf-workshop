@@ -160,20 +160,21 @@ def convert_bw(filename):
 # 5. Adjust the individual red, green and blue values for the pixels in the image with a number from 0
 # to 255.
 def rgb_modify(filename):
-    while True:
-        try:
-            image = cv2.imread(path + filename)
-            x, y = map(int, input("Enter x, y coordinate: ").split(","))
-            (b, g, r) = image[x, y]
-            print('The (B,G,R) value at [' + str(x) + ', ' + str(y) + '] is ', (b, g, r))
+    try:
+        image = cv2.imread(path + filename)
+        x, y = map(int, input("Enter x, y coordinate: ").split(","))
+        (b, g, r) = image[x, y]
+        print('Before: The (B,G,R) value at [' + str(x) + ', ' + str(y) + '] is ', (b, g, r))
 
-            image[x, y] = (0, 0, 255)
-            (b, g, r) = image[x, y]
-            print('The (B,G,R) value at [' + str(x) + ', ' + str(y) + '] is ', (b, g, r))
-            adjusted_img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-            show_img(adjusted_img, 'rgb_modify() ' + filename)
-        except ValueError:
-            print("Illegal Input!")
+        b, g, r = map(float, input("Enter B, G, R value: ").split(','))
+        image[x, y] = (b, g, r)
+
+        (b, g, r) = image[x, y]
+        print('After: The (B,G,R) value at [' + str(x) + ', ' + str(y) + '] is ', (b, g, r))
+        adjusted_img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        show_img(adjusted_img, 'rgb_modify() ' + filename)
+    except ValueError:
+        print("Illegal Input!")
 
 
 # 6. View the original and modified image using Matplotlib.
