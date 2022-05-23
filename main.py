@@ -162,12 +162,17 @@ def convert_bw(filename):
 def rgb_modify(filename):
     try:
         image = cv2.imread(path + filename)
+
         x, y = map(int, input("Enter x, y coordinate: ").split(","))
         (b, g, r) = image[x, y]
         print('Before: The (B,G,R) value at [' + str(x) + ', ' + str(y) + '] is ', (b, g, r))
 
-        b, g, r = map(float, input("Enter B, G, R value: ").split(','))
-        image[x, y] = (b, g, r)
+        b_input, g_input, r_input = map(float, input("Enter B, G, R value: ").split(','))
+        # set BGR value
+        image[x, y] = (b_input, g_input, r_input)
+
+        # test actual color change with bigger area
+        # image[0:x, 0:y] = (b_input, g_input, r_input)
 
         (b, g, r) = image[x, y]
         print('After: The (B,G,R) value at [' + str(x) + ', ' + str(y) + '] is ', (b, g, r))
