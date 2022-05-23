@@ -12,6 +12,7 @@ import time
 import os
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import tensorflow as tf
 import cv2
 
 path = './images/'
@@ -29,6 +30,8 @@ def show_setup():
     print('----------------------------------------------------\n')
 
     print('-- Python version     : ' + str(sys.version))
+    # FIXME: use tf
+    print('-- TensorFlow version : ' + str(tf.__version__))
     print('-- Matplotlib version : ' + str(mpl.__version__))
     print('-- Opencv version     : ' + str(cv2.__version__))
 
