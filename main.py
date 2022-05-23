@@ -107,7 +107,7 @@ def convert_bw(filename):
     image = cv2.imread(path + filename)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     gray_not = cv2.bitwise_not(gray)
-    thresh = 100
+    thresh = 150
     img_threshold = cv2.threshold(gray_not, thresh, 255, cv2.THRESH_BINARY)[1]
     cv2.imshow('threshold', img_threshold)
 
