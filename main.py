@@ -87,6 +87,14 @@ def read_rgb(filename):
     print(image.shape)
 
 
+# 3.
+def convert_gray(filename):
+    path = './images/'
+    image = cv2.imread(path + filename)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    print(gray.shape)
+
+
 # main
 if __name__ == '__main__':
     init_setup()
