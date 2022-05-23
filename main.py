@@ -43,6 +43,9 @@ def list_menu():
         list_names()
         list_menu()
 
+    if modified_file is not '':
+        print('-- Modified File exists --')
+
     print('1: List the names of the available images.')
     print('2: Read a given RGB colour image using the image file name in order to select the image.')
     print('3: Convert the image to grayscale.')
@@ -66,7 +69,7 @@ def list_menu():
     elif choice == '5':
         rgb_modify(selected_file)
     elif choice == '6':
-        plot_image(selected_file)
+        plot_image(selected_file, modified_file)
     elif choice == '7':
         save_image(modified_file)
     elif choice == '8':
@@ -79,9 +82,17 @@ def list_menu():
 
 def select_file():
     global selected_file
+    global modified_file
     filename = input('Please choose your image: ')
     selected_file = filename
+    # reset modified_file
+    modified_file = ''
     return selected_file
+
+
+def cache_mod_file(filename):
+    global modified_file
+    modified_file = filename
 
 
 def show_single_img(image, title):
@@ -120,6 +131,7 @@ def convert_gray(filename):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # convert to three gray color channel
     gray_image = cv2.merge([gray, gray, gray])
+    cache_mod_file(gray_image)
     show_single_img(gray_image, 'convert_gray() ' + filename)
 
 
@@ -141,6 +153,7 @@ def convert_bw(filename):
         convert_bw(filename)
     # covert to black & white image
     bw_image = cv2.threshold(gray_image, thresh, 255, cv2.THRESH_BINARY)[1]
+    cache_mod_file(bw_image)
     show_single_img(bw_image, 'convert_bw() ' + filename)
 
 
@@ -158,24 +171,41 @@ def rgb_modify(filename):
 
 
 # 6. View the original and modified image using Matplotlib.
-def plot_image(original):
+def plot_image(original, modified):
+    if modified_file is '':
+        print("please modify image first!")
+        list_menu()
+
     org_image = cv2.imread(path + original)
 
     fig, axs = plt.subplots(1, 2)
-    plt.suptitle('Images')
+    plt.suptitle('plot_image()')
 
+    # original picture
     axs[0].imshow(cv2.cvtColor(org_image, cv2.COLOR_BGR2RGB))
     axs[0].set_title('Original image', fontsize=10)
     axs[0].set_xlabel('x pixel', fontsize=10)
     axs[0].set_ylabel('y pixel', fontsize=10)
 
+    # modified picture
+    axs[1].imshow(cv2.cvtColor(modified, cv2.COLOR_BGR2RGB))
+    axs[1].set_title('Modified image', fontsize=10)
+    axs[1].set_xlabel('x pixel', fontsize=10)
+    axs[1].set_ylabel('y pixel', fontsize=10)
+
     plt.show()
 
 
 # 7. Save the modified image with a given image file name.
-def save_image(filename):
-    cv2.imwrite('.png', im_bw)
-
+def save_image(modified):
+    filename = input('Input file name for modified image: ')
+    # store in mod_images directory
+    os.chdir("./mod_images/")
+    # store image
+    cv2.imwrite(filename, modified)
+    print("-- " + filename + "stored successfully in ./mod_images/ --")
+    # return to previous folder
+    os.chdir("..")
 
 # main
 if __name__ == '__main__':
