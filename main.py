@@ -15,8 +15,8 @@ import matplotlib.pyplot as plt
 import cv2
 
 path = './images/'
-selected_file = ''
-modified_file = ''
+selected_file = None
+modified_file = None
 
 
 def show_setup():
@@ -36,14 +36,14 @@ def show_setup():
 def list_menu():
     print('')
     if selected_file:
-        print('-- Selected File: [' + selected_file + '] --')
+        print('-- Selected File: [' + str(selected_file) + '] --')
     else:
         print('----------------------------------------------------')
         print('Please select first image!')
         list_names()
         list_menu()
 
-    if modified_file is not '':
+    if modified_file is not None:
         print('-- Modified File exists --')
 
     print('1: List the names of the available images.')
@@ -86,7 +86,7 @@ def select_file():
     filename = input('Please choose your image: ')
     selected_file = filename
     # reset modified_file
-    modified_file = ''
+    modified_file = None
     return selected_file
 
 
@@ -172,7 +172,7 @@ def rgb_modify(filename):
 
 # 6. View the original and modified image using Matplotlib.
 def plot_image(original, modified):
-    if modified_file is '':
+    if modified_file is None:
         print("please modify image first!")
         list_menu()
 
