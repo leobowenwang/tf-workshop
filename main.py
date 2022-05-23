@@ -63,7 +63,7 @@ def list_menu():
     elif choice == '3':
         convert_gray(selected_file)
     elif choice == '4':
-        convert_gray(selected_file)
+        convert_bw(selected_file)
     elif choice == '5':
         rgb_modify(selected_file)
     elif choice == '6':
@@ -86,9 +86,10 @@ def select_file():
     return selected_file
 
 
-def show_single_img(image):
+def show_single_img(image, title):
     print(image.shape)
     plt.figure()
+    plt.title(title)
     plt.imshow(image)
     plt.show()
 
@@ -111,7 +112,7 @@ def list_names():
 # 2. Read a given RGB colour image using the image file name in order to select the image.
 def read_rgb(filename):
     image = cv2.imread(path + filename)
-    show_single_img(image)
+    show_single_img(image, "read_rgb() " + filename)
 
 
 # 3. Convert the image to grayscale.
@@ -122,7 +123,7 @@ def convert_gray(filename):
     # three color channel
     gray_image = cv2.merge([gray, gray, gray])
     # covert to black & white image
-    show_single_img(gray_image)
+    show_single_img(gray_image, "convert_gray() " + filename)
 
 
 # 4. Convert the image to a black & white image where the RGB colour image is initially converted to
@@ -135,14 +136,13 @@ def convert_bw(filename):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # three color channel
     gray_image = cv2.merge([gray, gray, gray])
-    # covert to black & white image
-    show_single_img(gray_image)
     # set threshold
-    thresh = 150
+    thresh = 127
+    # covert to black & white image
     bw_image = cv2.threshold(gray_image, thresh, 255, cv2.THRESH_BINARY)[1]
 
     cv2.imshow('Black white image', bw_image)
-    show_single_img(bw_image)
+    show_single_img(bw_image,  "convert_bw() " + filename)
     # print(img_threshold.shape)
 
 
