@@ -30,10 +30,10 @@ def init_setup():
     print('-- Matplotlib version : ' + str(mpl.__version__))
     print('-- Opencv version     : ' + str(cv2.__version__))
     print('')
-
+    print("************Image Augmentation Workshop Project**************")
 
 def list_menu():
-    print("************Image Augmentation Workshop Project**************")
+    print('')
     choice = input(
         """1: List the names of the available images.
 2: Read a given RGB colour image using the image file name in order to select the image.
@@ -58,8 +58,7 @@ Please enter your choice: """)
     elif choice == "8":
         sys.exit()
     else:
-        print("You must only select either a number from 1 - 8")
-        print("Please try again")
+        print("You must only select either a number from 1 - 8, please try again")
         list_menu()
 
 
