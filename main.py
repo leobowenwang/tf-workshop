@@ -116,7 +116,6 @@ def convert_bw(filename):
 
 # 5. Adjust the individual red, green and blue values for the pixels in the image with a number from 0
 # to 255.
-
 def rgb_modify(filename):
     image = cv2.imread(path + filename)
     (b, g, r) = image[20][50]
@@ -126,6 +125,7 @@ def rgb_modify(filename):
 
     plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     plt.show()
+
 
 # 6. View the original and modified image using Matplotlib.
 def plot_image(original):
