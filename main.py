@@ -120,7 +120,8 @@ def rgb_modify(filename):
     image = cv2.imread(path + filename)
     (b, g, r) = image[20][50]
     print("The (B,G,R) value at 50th pixel of the 20th row is ", (b, g, r))
-    image[20][50] = (255, 255, 255)
+    image[20][50] = (0, 0, 255)
+    (b, g, r) = image[20][50]
     print("The (B,G,R) value at 50th pixel of the 20th row is ", (b, g, r))
 
     plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
