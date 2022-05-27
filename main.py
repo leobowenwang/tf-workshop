@@ -6,13 +6,14 @@
 # ---------------------------------------------------------------------------
 """Image Augmentation Coding Project"""
 # ---------------------------------------------------------------------------
+import os
 import sys
 import time
-import os
+
+import cv2
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import tensorflow as tf
-import cv2
 
 org_path = './images/'
 mod_path = './mod_images/'
@@ -30,21 +31,17 @@ def show_setup():
     print('----------------------------------------------------\n')
 
     print('-- Python version     : ' + str(sys.version))
-    # FIXME: use tf
     print('-- TensorFlow version : ' + str(tf.__version__))
     print('-- Matplotlib version : ' + str(mpl.__version__))
     print('-- Opencv version     : ' + str(cv2.__version__))
 
 
 def list_menu():
-    print('')
+    print()
     if selected_file:
         print('-- Selected File: [' + str(selected_file) + '] --')
     else:
         print('----------------------------------------------------')
-        print('Please select first image!')
-        list_names()
-        list_menu()
 
     if modified_file is not None:
         print('-- Modified File exists --')
@@ -60,9 +57,9 @@ def list_menu():
     choice = input('Please enter your choice: ')
 
     if choice == '1':
-        list_names()
+        list_img()
     elif choice == '2':
-        read_rgb(selected_file)
+        select_img()
     elif choice == '3':
         convert_gray(selected_file)
     elif choice == '4':
@@ -70,25 +67,15 @@ def list_menu():
     elif choice == '5':
         rgb_modify(selected_file)
     elif choice == '6':
-        plot_image(selected_file, modified_file)
+        plot_img(selected_file, modified_file)
     elif choice == '7':
-        save_image(modified_file)
+        save_img(modified_file)
     elif choice == '8':
         sys.exit()
     else:
         print('You must only select either a number from 1 - 8, please try again')
 
     list_menu()
-
-
-def select_file():
-    global selected_file
-    global modified_file
-    filename = input('Please choose your image: ')
-    selected_file = filename
-    # reset modified_file
-    modified_file = None
-    return selected_file
 
 
 def cache_mod_file(filename):
@@ -104,29 +91,48 @@ def show_img(image, title):
     plt.show()
 
 
+def handle_err(warning_msg):
+    print('-- WARNING --')
+    print(warning_msg)
+    list_menu()
+
+
 # 1. List the names of the available images.
-def list_names():
+def list_img():
     print('-- List of images --')
     filelist = []
 
     for files in os.listdir(org_path):
         filelist.append(files)
         print(files)
-
-    if select_file() not in filelist:
-        print('Please input valid file name!')
-        print('')
-        list_names()
+    return filelist
 
 
 # 2. Read a given RGB colour image using the image file name in order to select the image.
-def read_rgb(filename):
-    image = cv2.imread(org_path + filename)
-    show_img(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), 'read_rgb() ' + filename)
+def select_img():
+    global selected_file
+    global modified_file
+    filelist = list_img()
+    filename = input('Please choose your image: ')
+
+    if filename not in filelist:
+        print('Please input valid file name!')
+        print()
+        select_img()
+    else:
+        selected_file = filename
+        # reset modified_file
+        modified_file = None
+        # read image
+        image = cv2.imread(org_path + selected_file)
+        show_img(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), 'select_img() ' + selected_file)
 
 
 # 3. Convert the image to grayscale.
 def convert_gray(filename):
+    if selected_file is None:
+        handle_err('Please select an image first!')
+
     image = cv2.imread(org_path + filename)
     # convert to grayscale value
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -141,6 +147,9 @@ def convert_gray(filename):
 # a threshold value from 0 to 255. If a pixel value is below or equal to the threshold value, it is set to
 # black and if above the threshold value, it is set to white.
 def convert_bw(filename):
+    if selected_file is None:
+        handle_err('Please select an image first!')
+
     image = cv2.imread(org_path + filename)
     # convert to grayscale value
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -157,20 +166,23 @@ def convert_bw(filename):
         cache_mod_file(bw_image)
         show_img(bw_image, 'convert_bw() ' + filename)
     except ValueError:
-        print("Illegal Input!")
+        print('Illegal Input!')
 
 
 # 5. Adjust the individual red, green and blue values for the pixels in the image with a number from 0
 # to 255.
 def rgb_modify(filename):
+    if selected_file is None:
+        handle_err('Please select an image first!')
+
     try:
         image = cv2.imread(org_path + filename)
 
-        x, y = map(int, input("Enter x, y coordinate: ").split(","))
+        x, y = map(int, input('Enter x, y coordinate: ').split(','))
         (b, g, r) = image[x, y]
         print('Before: The (B,G,R) value at [' + str(x) + ', ' + str(y) + '] is ', (b, g, r))
 
-        b_input, g_input, r_input = map(float, input("Enter B, G, R value: ").split(','))
+        b_input, g_input, r_input = map(float, input('Enter B, G, R value: ').split(','))
         # set BGR value
         image[x, y] = (b_input, g_input, r_input)
 
@@ -183,14 +195,16 @@ def rgb_modify(filename):
         cache_mod_file(adjusted_img)
         show_img(adjusted_img, 'rgb_modify() ' + filename)
     except ValueError:
-        print("Illegal Input!")
+        handle_err('Illegal Input!')
 
 
 # 6. View the original and modified image using Matplotlib.
-def plot_image(original, modified):
+def plot_img(original, modified):
+    if selected_file is None:
+        handle_err('Please select an image first!')
+
     if modified_file is None:
-        print('please modify image first!')
-        list_menu()
+        handle_err('Please modify image first!')
 
     org_image = cv2.imread(org_path + original)
 
@@ -213,19 +227,25 @@ def plot_image(original, modified):
 
 
 # 7. Save the modified image with a given image file name.
-def save_image(modified):
+def save_img(modified):
+    if selected_file is None:
+        handle_err('Please select an image first!')
+
     if modified_file is None:
-        print('please modify image first!')
-        list_menu()
+        handle_err('Please modify image first!')
 
     filename = input('Input file name for modified image: ')
-    # store in mod_images directory
-    os.chdir(mod_path)
-    # store image
-    cv2.imwrite(filename, modified)
-    print('-- ' + filename + 'stored successfully in ./mod_images/ --')
-    # return to previous folder
-    os.chdir('..')
+
+    if filename and filename.endswith('.jpg'):
+        # store in mod_images directory
+        os.chdir(mod_path)
+        # store image
+        cv2.imwrite(filename, modified)
+        print('-- ' + filename + 'stored successfully in ./mod_images/ --')
+        # return to previous folder
+        os.chdir('..')
+    else:
+        handle_err('Please input valid filename that ends with ".jpg"')
 
 
 # main
