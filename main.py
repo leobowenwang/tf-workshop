@@ -14,7 +14,8 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import cv2
 
-path = './images/'
+org_path = './images/'
+mod_path = './mod_images/'
 selected_file = None
 modified_file = None
 
@@ -110,7 +111,7 @@ def list_names():
     print('-- List of images --')
     filelist = []
 
-    for files in os.listdir(path):
+    for files in os.listdir(org_path):
         filelist.append(files)
         print(files)
 
@@ -122,13 +123,13 @@ def list_names():
 
 # 2. Read a given RGB colour image using the image file name in order to select the image.
 def read_rgb(filename):
-    image = cv2.imread(path + filename)
+    image = cv2.imread(org_path + filename)
     show_img(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), 'read_rgb() ' + filename)
 
 
 # 3. Convert the image to grayscale.
 def convert_gray(filename):
-    image = cv2.imread(path + filename)
+    image = cv2.imread(org_path + filename)
     # convert to grayscale value
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # convert to three gray color channel
@@ -142,7 +143,7 @@ def convert_gray(filename):
 # a threshold value from 0 to 255. If a pixel value is below or equal to the threshold value, it is set to
 # black and if above the threshold value, it is set to white.
 def convert_bw(filename):
-    image = cv2.imread(path + filename)
+    image = cv2.imread(org_path + filename)
     # convert to grayscale value
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # convert to three gray color channel
@@ -166,7 +167,7 @@ def convert_bw(filename):
 # to 255.
 def rgb_modify(filename):
     try:
-        image = cv2.imread(path + filename)
+        image = cv2.imread(org_path + filename)
 
         x, y = map(int, input("Enter x, y coordinate: ").split(","))
         (b, g, r) = image[x, y]
@@ -194,7 +195,7 @@ def plot_image(original, modified):
         print('please modify image first!')
         list_menu()
 
-    org_image = cv2.imread(path + original)
+    org_image = cv2.imread(org_path + original)
 
     fig, axs = plt.subplots(1, 2)
     plt.suptitle('plot_image()')
@@ -222,7 +223,7 @@ def save_image(modified):
 
     filename = input('Input file name for modified image: ')
     # store in mod_images directory
-    os.chdir('./mod_images/')
+    os.chdir(mod_path)
     # store image
     cv2.imwrite(filename, modified)
     print('-- ' + filename + 'stored successfully in ./mod_images/ --')
