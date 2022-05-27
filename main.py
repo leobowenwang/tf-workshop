@@ -216,6 +216,10 @@ def plot_image(original, modified):
 
 # 7. Save the modified image with a given image file name.
 def save_image(modified):
+    if modified_file is None:
+        print('please modify image first!')
+        list_menu()
+
     filename = input('Input file name for modified image: ')
     # store in mod_images directory
     os.chdir('./mod_images/')
