@@ -148,11 +148,9 @@ def convert_bw(filename):
     if selected_file is None:
         handle_err('Please select an image first!')
 
-    image = cv2.imread(org_path + filename)
+    image = tf.image.decode_jpeg(tf.io.read_file(org_path + filename))
     # convert to grayscale value
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    # convert to three gray color channel
-    gray_image = cv2.merge([gray, gray, gray])
+    gray = tf.image.rgb_to_grayscale(image)
     # set threshold
     try:
         thresh = int(input('Please input a threshold value between 0 - 255: '))
@@ -160,7 +158,7 @@ def convert_bw(filename):
         if thresh < 0 or thresh > 256:
             convert_bw(filename)
         # covert to black & white image
-        bw_image = tf.select(gray, thresh, 255, cv2.THRESH_BINARY)[1]
+        bw_image = tf.where(gray > thresh, 255 * tf.ones_like(gray), tf.zeros_like(gray))
         cache_mod_file(bw_image)
         show_img(bw_image, 'convert_bw() ' + filename)
     except ValueError:
