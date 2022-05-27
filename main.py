@@ -166,7 +166,7 @@ def convert_bw(filename):
         cache_mod_file(bw_image)
         show_img(bw_image, 'convert_bw() ' + filename)
     except ValueError:
-        print('Illegal Input!')
+        handle_err('Illegal Input!')
 
 
 # 5. Adjust the individual red, green and blue values for the pixels in the image with a number from 0
