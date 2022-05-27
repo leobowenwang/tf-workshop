@@ -84,10 +84,10 @@ def cache_mod_file(filename):
 
 
 def show_img(image, title):
-    print(image.shape)
+    print(image.shape, image.dtype)
     plt.figure()
     plt.title(title)
-    plt.imshow(image)
+    plt.imshow(image, cmap='gray')
     plt.show()
 
 
@@ -124,8 +124,8 @@ def select_img():
         # reset modified_file
         modified_file = None
         # read image
-        image = cv2.imread(org_path + selected_file)
-        show_img(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), 'select_img() ' + selected_file)
+        image = tf.image.decode_jpeg(tf.io.read_file(org_path + selected_file))
+        show_img(image, 'select_img() ' + selected_file)
 
 
 # 3. Convert the image to grayscale.
@@ -133,13 +133,11 @@ def convert_gray(filename):
     if selected_file is None:
         handle_err('Please select an image first!')
 
-    image = cv2.imread(org_path + filename)
+    image = tf.image.decode_jpeg(tf.io.read_file(org_path + filename))
     # convert to grayscale value
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    # convert to three gray color channel
-    gray_image = cv2.merge([gray, gray, gray])
-    cache_mod_file(gray_image)
-    show_img(gray_image, 'convert_gray() ' + filename)
+    gray = tf.image.rgb_to_grayscale(image)
+    cache_mod_file(gray)
+    show_img(gray, 'convert_gray() ' + filename)
 
 
 # 4. Convert the image to a black & white image where the RGB colour image is initially converted to
@@ -162,7 +160,7 @@ def convert_bw(filename):
         if thresh < 0 or thresh > 256:
             convert_bw(filename)
         # covert to black & white image
-        bw_image = cv2.threshold(gray_image, thresh, 255, cv2.THRESH_BINARY)[1]
+        bw_image = tf.select(gray, thresh, 255, cv2.THRESH_BINARY)[1]
         cache_mod_file(bw_image)
         show_img(bw_image, 'convert_bw() ' + filename)
     except ValueError:
