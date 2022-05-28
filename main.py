@@ -7,6 +7,9 @@
 """Image Augmentation Coding Project"""
 # ---------------------------------------------------------------------------
 import os
+
+# hide tf warning message
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import sys
 import time
 
