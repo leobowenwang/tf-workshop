@@ -202,19 +202,19 @@ def plot_img(original, modified):
     if modified_file is None:
         handle_err('Please modify image first!')
 
-    org_image = cv2.imread(org_path + original)
+    org_image = tf.image.decode_jpeg(tf.io.read_file(org_path + original))
 
     fig, axs = plt.subplots(1, 2)
     plt.suptitle('plot_image()')
 
     # original picture
-    axs[0].imshow(cv2.cvtColor(org_image, cv2.COLOR_BGR2RGB))
+    axs[0].imshow(org_image, cmap='gray')
     axs[0].set_title('Original image', fontsize=10)
     axs[0].set_xlabel('x pixel', fontsize=10)
     axs[0].set_ylabel('y pixel', fontsize=10)
 
     # modified picture
-    axs[1].imshow(cv2.cvtColor(modified, cv2.COLOR_BGR2RGB))
+    axs[1].imshow(modified, cmap='gray')
     axs[1].set_title('Modified image', fontsize=10)
     axs[1].set_xlabel('x pixel', fontsize=10)
     axs[1].set_ylabel('y pixel', fontsize=10)
