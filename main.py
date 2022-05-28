@@ -7,9 +7,6 @@
 """Image Augmentation Coding Project"""
 # ---------------------------------------------------------------------------
 import os
-
-# hide tf warning message
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import sys
 import time
 
@@ -17,6 +14,9 @@ import cv2
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import tensorflow as tf
+
+# hide tf warning message
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 org_path = './images/'
 mod_path = './mod_images/'
