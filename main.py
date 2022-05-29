@@ -178,21 +178,24 @@ def rgb_modify(filename):
     try:
         image = cv2.imread(org_path + filename)
 
-        x, y = map(int, input('Enter x, y coordinate: ').split(','))
-        (b, g, r) = image[x, y]
-        print('Before: The (B,G,R) value at [' + str(x) + ', ' + str(y) + '] is ', (b, g, r))
+        option = input('Choose the value type to change. Accepted values: "r", "g", "b": ').lower()
 
-        b_input, g_input, r_input = map(float, input('Enter B, G, R value: ').split(','))
-        # set BGR value
-        image[x, y] = (b_input, g_input, r_input)
+        if option == 'r':
+            index = 2
+        elif option == 'g':
+            index = 1
+        elif option == 'b':
+            index = 0
+        else:
+            print('Invalid option. Accepted values: "r", "g", "b"')
+            rgb_modify(filename)
 
-        # test actual color change with bigger area
-        # image[0:x, 0:y] = (b_input, g_input, r_input)
+        thresh = int(input('Please input a threshold value between 0 - 255: '))
+        if thresh < 0 or thresh > 256:
+            rgb_modify(filename)
 
-        (b, g, r) = image[x, y]
-        print('After: The (B,G,R) value at [' + str(x) + ', ' + str(y) + '] is ', (b, g, r))
-        adjusted_img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        cache_mod_file(adjusted_img)
+        image[:, :, index] = thresh
+        adjusted_img = tf.cast(image[..., ::-1], tf.int32)
         show_img(adjusted_img, 'rgb_modify() ' + filename)
     except ValueError:
         handle_err('Illegal Input!')
