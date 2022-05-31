@@ -189,11 +189,11 @@ def rgb_modify(filename):
             print('Invalid option. Accepted values: "r", "g", "b"')
             rgb_modify(filename)
 
-        thresh = int(input('Please input a threshold value between 0 - 255: '))
-        if thresh < 0 or thresh > 256:
+        value = int(input('Please input a value between 0 - 255: '))
+        if value < 0 or value > 256:
             rgb_modify(filename)
 
-        image[:, :, index] = thresh
+        image[:, :, index] = value
         adjusted_img = tf.cast(image[..., ::-1], tf.int32)
         cache_mod_file(adjusted_img)
         show_img(adjusted_img, 'rgb_modify() ' + filename)
