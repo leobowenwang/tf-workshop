@@ -158,8 +158,10 @@ def convert_bw(filename):
     try:
         thresh = int(input('Please input a threshold value between 0 - 255: '))
         # TODO: check int
-        if thresh < 0 or thresh > 255:
-            convert_bw(filename)
+        if thresh < 0 or thresh > 256:
+            print('Please input a threshold value between 0 - 255: ')
+            return
+
         # covert to black & white image
         bw_image = tf.where(gray > thresh, 255 * tf.ones_like(gray), tf.zeros_like(gray))
         cache_mod_file(bw_image)
@@ -190,8 +192,9 @@ def rgb_modify(filename):
             rgb_modify(filename)
 
         value = int(input('Please input a value between 0 - 255: '))
-        if value < 0 or value > 255:
-            rgb_modify(filename)
+        if value < 0 or value > 256:
+            print('Please input a threshold value between 0 - 255: ')
+            return
 
         image[:, :, index] = value
         adjusted_img = tf.cast(image[..., ::-1], tf.int32)
